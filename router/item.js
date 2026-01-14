@@ -38,9 +38,8 @@ router.get("/", async (req, res) => {
 router.delete("/:id", async (req, res) => {
     try {
         const { id } = req.params;
-         const invoiceExists = await Invoice.exists({ customer: id });
-
-        if (invoiceExists) {
+         const ItemsExist = await Items.exists({ _id: id });
+        if (ItemsExist) {
             return res.status(400).json({
                 message: "Cannot delete customer. Invoices exist for this customer.",
             });
