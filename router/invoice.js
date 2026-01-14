@@ -5,16 +5,20 @@ const Items = require("../models/itemsSchema");
 const Customers = require("../models/customerSchema");
 
 
+// GET /invoice  OR  /invoice?id=xxxx
 router.get("/", async (req, res) => {
   try {
-    const invoices = await Invoice.find()
+    const { id } = req.query;
+
+    const filter = {};
+    if (id) filter._id = id;
+
+    const invoices = await Invoice.find(filter)
       .populate("customer", "userName discount")
       .populate("items.item", "name phone price")
       .sort({ createdAt: -1 });
 
-    return res.status(200).json({
-      data: invoices,
-    });
+    return res.status(200).json({ data: invoices });
   } catch (error) {
     return res.status(500).json({
       message: "Failed to fetch invoices",
