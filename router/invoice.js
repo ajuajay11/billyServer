@@ -5,8 +5,7 @@ const Items = require("../models/itemsSchema");
 const Customers = require("../models/customerSchema");
 
 
-// GET /invoice  OR  /invoice?id=xxxx
-router.get("/", async (req, res) => {
+ router.get("/", async (req, res) => {
   try {
     const { id } = req.query;
 
@@ -14,7 +13,7 @@ router.get("/", async (req, res) => {
     if (id) filter._id = id;
 
     const invoices = await Invoice.find(filter)
-      .populate("customer", "userName discount")
+      .populate("customer", "username discount")
       .populate("items.item", "name phone price")
       .sort({ createdAt: -1 });
 
